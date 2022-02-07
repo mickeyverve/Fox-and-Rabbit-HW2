@@ -7,8 +7,8 @@ public abstract class Animal {
 
 
 
-    // A shared random number generator to control breeding.
-    private static final Random RANDOM = new Random();
+   // A shared random number generator to control breeding.
+    protected static final Random RANDOM = new Random();
     // The rabbit's age
     private int age=0;
 
