@@ -23,7 +23,7 @@ public class Tiger extends Animal {
 
     @Override
     protected double getBreedingProbability() {
-        return 0.01;
+        return AnimalType.TIGER.getProbability();
     }
 
     @Override
@@ -33,12 +33,12 @@ public class Tiger extends Animal {
 
     @Override
     protected int getMaxAge() {
-        return 20;
+        return 200;
     }
 
     @Override
     protected int getBreedingAge() {
-        return 200;
+        return 20;
     }
 
     /**
