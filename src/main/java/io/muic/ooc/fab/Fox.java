@@ -22,7 +22,7 @@ public class Fox extends Animal {
 
     @Override
     protected double getBreedingProbability() {
-        return AnimalType.FOX.getProbability();;
+        return AnimalType.FOX.getProbability();
     }
 
     @Override
