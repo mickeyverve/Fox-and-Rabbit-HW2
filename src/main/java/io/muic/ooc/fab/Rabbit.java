@@ -18,7 +18,7 @@ public class Rabbit extends Animal {
 
     @Override
     protected double getBreedingProbability() {
-        return AnimalType.RABBIT.getProbability();;
+        return AnimalType.RABBIT.getProbability();
     }
 
     @Override
