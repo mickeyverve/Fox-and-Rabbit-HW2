@@ -19,7 +19,7 @@ public class Hunter extends Animal {
 
     @Override
     protected double getBreedingProbability() {
-        return 0.005;
+        return AnimalType.HUNTER.getProbability();
     }
 
     @Override
