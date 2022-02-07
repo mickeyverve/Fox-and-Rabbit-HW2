@@ -4,19 +4,24 @@ import java.awt.*;
 
 public enum AnimalType {
 
-    RABBIT(Rabbit.class,Color.ORANGE,0.08),
-    FOX(Fox.class,Color.BLUE,0.02);
+    RABBIT(Rabbit.class,Color.ORANGE,0.08,9),
+    FOX(Fox.class,Color.GREEN,0.02,20),
+    TIGER(Tiger.class,Color.BLACK,0.01,20),
+    HUNTER(Hunter.class,Color.RED,0.005,0);
 
     private Class<? extends Animal> animalClass;
 
     private Color color;
 
     private double probability;
+    
+    private int foodValue;
 
-    AnimalType(Class<? extends Animal> animalClass, Color color, double probability) {
+    AnimalType(Class<? extends Animal> animalClass, Color color, double probability, int foodValue) {
         this.animalClass = animalClass;
         this.color=color;
         this.probability = probability;
+        this.foodValue=foodValue;
     }
 
     public double getProbability() {
@@ -29,6 +34,10 @@ public enum AnimalType {
 
     public Class<? extends Animal> getAnimalClass(){
         return animalClass;
+    }
+    
+    public int getFoodValue() {
+        return foodValue;
     }
 
 
