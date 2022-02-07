@@ -5,25 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class Tiger extends Animal {
-    // Characteristics shared by all tigers (class variables).
-
-    // The age at which a tiger can start to breed.
-    private static final int BREEDING_AGE = 20;
-    // The age to which a tiger can live.
-    private static final int MAX_AGE = 200;
-    // The likelihood of a tiger breeding.
-    private static final double BREEDING_PROBABILITY = 0.01;
-    // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
-    // The food value of a single rabbit. In effect, this is the
-    // number of steps a tiger can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 9;
-    // The food value of a single fox. In effect, this is the
-    // number of steps a tiger can go before it has to eat again.
-    private static final int FOX_FOOD_VALUE = 20;
-    // Random generator
-    private static final Random RANDOM = new Random();
-    // The tiger's food level, which is increased by eating rabbits and foxes.
+   // The tiger's food level, which is increased by eating rabbits and foxes.
     private int foodLevel;
 
     /**
@@ -36,30 +18,40 @@ public class Tiger extends Animal {
      */
     public Tiger(boolean randomAge, Field field, Location location) {
         super(randomAge, field, location);
-        foodLevel = RANDOM.nextInt(RABBIT_FOOD_VALUE+FOX_FOOD_VALUE);
+        foodLevel = RANDOM.nextInt(AnimalType.RABBIT.getFoodValue()+AnimalType.FOX.getFoodValue());
     }
 
     @Override
     protected double getBreedingProbability() {
-        return BREEDING_PROBABILITY;
+        return 0.01;
     }
 
     @Override
     protected int getMaxLitterSize() {
-        return MAX_LITTER_SIZE;
+        return 2;
+    }
+
+    @Override
+    protected int getMaxAge() {
+        return 20;
+    }
+
+    @Override
+    protected int getBreedingAge() {
+        return 200;
     }
 
     /**
      * This is what the tiger does most of the time: it hunts for rabbits. In the
      * process, it might breed, die of hunger, or die of old age.
      *
-     * @param newTigers A list to return newly born tigers.
+     * @param newAnimals A list to return newly born tigers.
      */
-    public void act(List<Animal> newTigers) {
+    public void act(List<Animal> newAnimals) {
         incrementAge();
         incrementHunger();
         if (isAlive()) {
-            giveBirth(newTigers);
+            giveBirth(newAnimals);
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if (newLocation == null) {
@@ -92,7 +84,7 @@ public class Tiger extends Animal {
      *
      * @return Where food was found, or null if it wasn't.
      */
-    private Location findFood() {
+    protected Location findFood() {
         List<Location> adjacent = getField().adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
         while (it.hasNext()) {
@@ -102,7 +94,7 @@ public class Tiger extends Animal {
                 Rabbit rabbit = (Rabbit) animal;
                 if (rabbit.isAlive()) {
                     rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
+                    foodLevel = AnimalType.RABBIT.getFoodValue();
                     return where;
                 }
             }
@@ -110,7 +102,7 @@ public class Tiger extends Animal {
                 Fox fox= (Fox) animal;
                 if (fox.isAlive()) {
                     fox.setDead();
-                    foodLevel = FOX_FOOD_VALUE;
+                    foodLevel = AnimalType.FOX.getFoodValue();
                     return where;
                 }
             }
@@ -134,14 +126,5 @@ public class Tiger extends Animal {
             Tiger young = new Tiger(false, getField(), loc);
             newTigers.add(young);
         }
-    }
-
-    @Override
-    protected int getMaxAge() {
-        return MAX_AGE;
-    }
-    @Override
-    protected int getBreedingAge() {
-        return BREEDING_AGE;
     }
 }
