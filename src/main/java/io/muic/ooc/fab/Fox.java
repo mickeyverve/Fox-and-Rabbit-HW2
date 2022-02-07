@@ -5,23 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class Fox extends Animal {
-    // Characteristics shared by all foxes (class variables).
-
-    // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 15;
-    // The age to which a fox can live.
-    private static final int MAX_AGE = 150;
-    // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
-    // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
-    // The food value of a single rabbit. In effect, this is the
-    // number of steps a fox can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 9;
-    // Random generator
-    private static final Random RANDOM = new Random();
-    // The fox's food level, which is increased by eating rabbits.
-    private int foodLevel;
+   private int foodLevel;
 
     /**
      * Create a fox. A fox can be created as a new born (age zero and not
@@ -33,30 +17,38 @@ public class Fox extends Animal {
      */
     public Fox(boolean randomAge, Field field, Location location) {
         super(randomAge, field, location);
-        foodLevel = RANDOM.nextInt(RABBIT_FOOD_VALUE);
+        foodLevel = RANDOM.nextInt(AnimalType.RABBIT.getFoodValue());
     }
 
     @Override
     protected double getBreedingProbability() {
-        return BREEDING_PROBABILITY;
+        return 0.08;
     }
 
     @Override
-    protected int getMaxLitterSize() {
-        return MAX_LITTER_SIZE;
+    protected int getMaxLitterSize() { return 2; }
+
+    @Override
+    protected int getMaxAge() {
+        return 150;
+    }
+
+    @Override
+    protected int getBreedingAge() {
+        return 15;
     }
 
     /**
      * This is what the fox does most of the time: it hunts for rabbits. In the
      * process, it might breed, die of hunger, or die of old age.
      *
-     * @param newFoxes A list to return newly born foxes.
+     * @param newAnimals A list to return newly born foxes.
      */
-    public void act(List<Animal> newFoxes) {
+    public void act(List<Animal> newAnimals) {
         incrementAge();
         incrementHunger();
         if (isAlive()) {
-            giveBirth(newFoxes);
+            giveBirth(newAnimals);
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if (newLocation == null) {
@@ -72,9 +64,6 @@ public class Fox extends Animal {
             }
         }
     }
-
-
-
 
     /**
      * Make this fox more hungry. This could result in the fox's death.
@@ -102,7 +91,7 @@ public class Fox extends Animal {
                 Rabbit rabbit = (Rabbit) animal;
                 if (rabbit.isAlive()) {
                     rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
+                    foodLevel = AnimalType.RABBIT.getFoodValue();
                     return where;
                 }
             }
@@ -126,14 +115,5 @@ public class Fox extends Animal {
             Fox young = new Fox(false, getField(), loc);
             newFoxes.add(young);
         }
-    }
-
-    @Override
-    protected int getMaxAge() {
-        return MAX_AGE;
-    }
-    @Override
-    protected int getBreedingAge() {
-        return BREEDING_AGE;
     }
 }
